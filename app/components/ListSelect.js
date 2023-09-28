@@ -12,6 +12,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
       newChecklistStates[index] = !newChecklistStates[index];
       setChecklistStates(newChecklistStates);
     };
+    //console.log(emails)
   const back = (e) => {
     e.preventDefault;
     setShowListSelect(true)
@@ -40,7 +41,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
     return (
         <>
         <div className={'buttonsContainer'}>
-            {mp.map((mp, index) => (
+            {emails?.map((email, index) => (
                 <label key={index} className='list-mp-row' >
                     <input
                     id="representativeList-checkbox"
@@ -48,7 +49,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
                     checked={checklistStates[index]}
                     onChange={() => toggleChecklist(index)}
                     />
-                    <h5>{mp.name}</h5>
+                    <h5>{email.name}</h5>
                 </label>
             ))}
         </div>
