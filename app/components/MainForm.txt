@@ -334,7 +334,6 @@ setShowList(true)
                     setShowList={setShowList}
                     showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
-                  colors={colors}
                   />
                 ))
               ) : (
@@ -370,7 +369,6 @@ setShowList(true)
                   tweet={tweet}
                   showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
-                  colors={colors}
                   />
                 ))
               ) : (
@@ -463,9 +461,9 @@ setShowList(true)
         typData={typData}
         showThankYou={showThankYou}
         setShowMainContainer={setShowMainContainer}
-        colors={colors}
       />
     </div>
   );
 };
 export default MainForm;
+

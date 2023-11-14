@@ -1,20 +1,24 @@
 import Head from "next/head";
-import { LinkedinIcon, LinkedinShareButton,FacebookShareButton, TwitterShareButton,WhatsappShareButton,FacebookIcon, TwitterIcon, WhatsappIcon } from "react-share";
+import {LinkedinShareButton,FacebookShareButton, TwitterShareButton,WhatsappShareButton } from "react-share";
+import WhatsappIcon from "./icons/WhatsappIcon";
+import FacebookIcon from "./icons/FacebookIcon";
+import TwitterIcon from "./icons/TwitterIcon";
+import LinkedinIcon from "./icons/LinkedinIcon";
 import "./share.css";
-const Share = ({shareMessage,shareUrl }) => {  
+const Share = ({shareMessage,shareUrl, colors }) => {  
   return (
     <div >
       <FacebookShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} quote={shareMessage? shareMessage.replace(/"/g, '&quot;') :  'Fill this in your dashboard'} hashtag="#yodecidocomomemuevo" className="share-buttons">
-      <FacebookIcon size={32} round={true} />
+      <FacebookIcon primaryColor={colors.background_color} secundaryColor={colors.link_color}  />
       </FacebookShareButton>
       <TwitterShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} title={shareMessage? shareMessage : 'Fill this in your dashboard'}className="share-buttons">
-      <TwitterIcon size={32} round={true} />
+      <TwitterIcon primaryColor={colors.background_color} secundaryColor={colors.link_color} />
       </TwitterShareButton>
       <WhatsappShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} title={shareMessage? shareMessage : 'Fill this in your dashboard'} className="share-buttons">
-      <WhatsappIcon size={32} round={true} />
+      <WhatsappIcon primaryColor={colors.background_color} secundaryColor={colors.link_color} />
       </WhatsappShareButton>
       <LinkedinShareButton url={shareUrl? shareUrl: 'Fill this in your dashboard'} title={shareMessage? shareMessage : 'Fill this in your dashboard'} className="share-buttons">
-      <LinkedinIcon size={32} round={true} />
+      <LinkedinIcon primaryColor={colors.background_color} secundaryColor={colors.link_color} />
       </LinkedinShareButton>
       <Head>
         {/* Script de Facebook */}

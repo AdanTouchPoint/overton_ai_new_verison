@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/cjs/Button";
 import Share from "./Share";
 
 const ThankYou = ({
@@ -7,38 +6,30 @@ const ThankYou = ({
   setShowFindForm,
   setShowThankYou,
   typData,
+  setShowMainContainer,
+  colors
 }) => {
   const click = (e) => {
     e.preventDefault();
     setShowThankYou(true);
     setShowFindForm(false);
+    setShowMainContainer(false);
   };
   return (
-    <div hidden={showThankYou} className={"container typ-container"}>
-      <form name="fm-tym" onSubmit={click}>
+    <div hidden={showThankYou} className={"container typ-container"}>      
         <div className="typ-content">
-          <h3>
+          <h3 className="typ-message">
             {typData.data?.docs[0]
               ? typData.data?.docs[0].thankYouMessage
               : typData.thankYouMessage}
           </h3>
-          <h5>
+          <h5 className="second-typ-message">
             {typData.data?.docs[0]
               ? typData.data?.docs[0].secondThankYouMessage
               : typData.secondThankYouMessage}
           </h5>
-          <Button
-            id="repeatButton-typView"
-            type={"submit"}
-            onClick={click}
-            variant={"dark"}
-            className="capitalize-style"
-          >
-            {typData.data?.docs[0]
-              ? typData.data?.docs[0].repeatButtonTyp
-              : typData.repeatButtonTyp}
-          </Button>
-          <h5>
+          
+          <h5 className="share-text">
             {typData.data?.docs[0]
               ? typData.data?.docs[0].shareLabel
               : typData.shareLabel}
@@ -46,9 +37,19 @@ const ThankYou = ({
           <Share
             shareUrl={typData.data?.docs[0].shareUrl}
             shareMessage={typData.data?.docs[0].shareMessage}
+            colors={colors}
           />
+
+          <span
+            id="repeatButton-typView"
+            onClick={click}
+            className="capitalize-style link-simulation do-again-btn"
+          >
+            {typData.data?.docs[0]
+              ? typData.data?.docs[0].repeatButtonTyp
+              : typData.repeatButtonTyp}
+          </span>
         </div>
-      </form>
     </div>
   );
 };

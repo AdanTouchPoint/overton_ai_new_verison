@@ -13,7 +13,7 @@
   }
   .spinner {
     border: 3px solid rgba(0, 0, 0, 0.1);
-    border-top-color: #000000;
+    border-top-color: var(--main-texts-color);
     border-radius: 60%;
     width: 60px;
     height: 60px;
