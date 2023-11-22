@@ -9,10 +9,11 @@ import { fetchData } from "../assets/petitions/fetchData";
 import { fetchLeads } from "../assets/petitions/fetchLeads";
 import { urlEncode } from "../assets/helpers/utilities";
 import { useCompletion } from "ai/react";
+import EmailPreview from "./EmailPreview";
 import { animateScroll as scroll } from "react-scroll";
 import LoadingMainForm from "./LoadingMainForm";
-import ManualEmailForm from "./ManualEmailForm";
-const EmailForm = ({
+
+const ManualEmailForm = ({
   leads,
   setLeads,
   questions,
@@ -31,13 +32,14 @@ const EmailForm = ({
   mainData,
   setShowList,
   allDataIn,
-  setAllDataIn,
   setMany,
   many,
-  setShowMainContainer
+  setShowMainContainer,
+  showManualEmailForm,
+  setShowManualEmailForm,
+  isLoading
 }) => {
   const [showEmailPreview, setShowEmailPreview] = useState(true);
-  const [showManualEmailForm, setShowManualEmailForm] = useState(true)
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState(false);
   const [showLoadSpin, setShowLoadSpin] = useState(false);
@@ -46,28 +48,12 @@ const EmailForm = ({
   const [requestCompletion, setRequestCompletion] = useState([]);
   const [ableGenIA, setAbleGenIA] = useState(true);
   const [continueBtn, setcontinueBtn] = useState(true);
-  const {
-    complete,
-    completion,
-    input,
-    stop,
-    isLoading,
-    handleInputChange,
-    handleSubmit,
-    setCompletion,
-  } = useCompletion({
-    api: "/api/completion",
-    //(onFinish: ()=>(setRequestCompletion({message: JSON.parse(completion).message , subject: JSON.parse(completion).subject} ))
-  });
   
   const handleMessageChange = (e) => {
     e.preventDefault();
     setDataUser({ ...emailData, [e.target.name]: e.target.value });
-    if(!dataUser.message || dataUser.message === ''){
-      setAbleGenIA(false)
-    }
   };
-  const handleContinue = async (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (many === true) {
       console.log(allDataIn);
@@ -80,7 +66,7 @@ const EmailForm = ({
           dataUser.userName
         }&emailData=${
           dataUser.emailUser
-        }&text=${requestCompletion.message.replace(/\n\r?/g, "<br/>")}`
+        }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
       );
       if (payload.success === true) {
         fetchLeads(
@@ -92,7 +78,7 @@ const EmailForm = ({
           emailData,
           emailMessage
         );
-        setShowEmailForm(true);
+        setShowManualEmailForm(true);
         setShowFindForm(true);
         setShowEmailPreview(true);
         setShowThankYou(false);
@@ -144,7 +130,7 @@ const EmailForm = ({
         emailData,
         emailMessage
       );
-      setShowEmailForm(true);
+      setShowManualEmailForm(true);
       setShowFindForm(true);
       setShowEmailPreview(true);
       setShowThankYou(false);
@@ -178,42 +164,14 @@ const EmailForm = ({
   const back = (e) => {
     e.preventDefault();
     setShowList(false);
-    setShowEmailForm(true);
+    setShowManualEmailForm(true);
     setShowMainContainer(false);
   };
   const loading = (cl) => {
     scroll.scrollTo(1000);
     return <LoadingMainForm cl={cl} />;
   };
-  const clickAI = async (e) => {
-    e.preventDefault();
-    console.log(dataUser.message);
-    if(!dataUser.message || dataUser.message === ''){
-      // setAbleGenIA(false)
-
-    }
-    const text = await complete(dataUser.message);
-    let response = await JSON.parse(text);
-    console.log(text);
-    setRequestCompletion({ message: response.message });
-    setDataUser({
-      ...dataUser,
-      subject: response.subject,
-      message: response.message,
-    });
-    setcontinueBtn(false)
-  };
-
-  const manualMailChange = async (e) =>{
-    e.preventDefault();
-    setDataUser({
-      ...dataUser,
-      subject:'',
-      message:''
-    })
-    setShowEmailForm(true)
-    setShowManualEmailForm(false)
-  }
+  
   return (
     <>
       {isLoading == true ? (
@@ -222,7 +180,7 @@ const EmailForm = ({
 
               </div>
             ) : (
-            <div className={"emailContainer"} hidden={showEmailForm}>
+            <div className={"emailContainer"} hidden={showManualEmailForm}>
         {error ? (
           <Alert variant={"danger"}>
             All fields are required, please fill in the missing ones.
@@ -230,7 +188,7 @@ const EmailForm = ({
         ) : null}
         <Form
           name="fm-email"
-          onSubmit={handleSubmit}
+          onSubmit={handleSend}
           noValidate
           validated={validated}
         >
@@ -238,15 +196,15 @@ const EmailForm = ({
           
             {
               continueBtn ? (<>
-              <h3 className="ia-instructions-title main-text-title">Instructions</h3>
+              <h3 className="ia-instructions-title main-text-title">Instructiones</h3>
             <p className="ia-instructions-p main-text-instruction">
               write how feel you about it and AI helps you to write a email for
               you representatives
             </p>
               </>) : (
             <>
-            <h3 className="ia-instructions-title main-text-title">{mainData.titlePreview ? mainData.titlePreview : 'Edit & Send'}</h3>
-            <p className="ia-instructions-p main-text-instruction">{mainData.intructionsPreview ? mainData.intructionsPreview : 'Edit and/or send the email that was written for you by AI.'}</p> 
+            <h3 className="ia-instructions-title">{mainData.titlePreview ? mainData.titlePreview : 'Edit & Send'}</h3>
+            <p className="ia-instructions-p">{mainData.intructionsPreview ? mainData.intructionsPreview : 'Edit and/or send the email that was written for you by AI.'}</p> 
             
             </>  
             
@@ -257,10 +215,9 @@ const EmailForm = ({
                 {" "}
                 <div>
                   <Col>
-                    {dataUser.subject ? (
                       <Form.Group>
-                        <Form.Label>
-                          {mainData.emailFormSubjectPlaceholder}
+                        <Form.Label className="subject-label">
+                          {mainData.emailFormSubjectPlaceholder ? mainData.emailFormSubjectPlaceholder : 'Subject Line'}
                         </Form.Label>
                         <Form.Control
                           id="subject-emailform"
@@ -268,12 +225,13 @@ const EmailForm = ({
                           name="subject"
                           type="text"
                           defaultValue={dataUser.subject}
+                          className="subject-input"
                         />
                       </Form.Group>
-                    ) : null}
+                   
                     <Form.Group>
-                      <Form.Label>
-                        {mainData.emailFormMessagePlaceholder}
+                      <Form.Label className="subject-label">
+                        {mainData.emailFormMessagePlaceholder ? mainData.emailFormMessagePlaceholder : 'Email'}
                       </Form.Label>
                       <Form.Control
                         id="message-emailform"
@@ -281,7 +239,7 @@ const EmailForm = ({
                         as="textarea"
                         rows={12}
                         name="message"
-                        defaultValue={requestCompletion.message}
+                        defaultValue={dataUser.message}
                         className="email-ia-text-area"
                         required
                       />
@@ -292,55 +250,24 @@ const EmailForm = ({
                   <Button onClick={back} className={"button-email-form back-button"}>
                     Back
                   </Button>
-                  <Button onClick={clickAI} className={"button-email-form secundary-btn"} disabled={ableGenIA} hidden={!continueBtn}>
-                    Generate
-                  </Button>
                   <Button
-                    onClick={handleContinue}
+                    onClick={handleSend}
                     className={"button-email-form secundary-btn"}
-                    hidden={continueBtn}
+                    
                   >
-                    Send
+                    Send!
                   </Button>
                 </div>
               </div>
-              <div className="change-to-manual-email-container">
-          <span className="change-to-manual-email-letters" onClick={manualMailChange}>OR Click here to write without using AI <u className="change-to-manual-email-btn">Write it yourself</u></span>
-        </div>
+              
           </div>
         </Form>
         
         </div>
       )}
-      <ManualEmailForm
-        many={many}
-        setMany={setMany}
-        setShowList={setShowList}
-        setLeads={setLeads}
-        leads={leads}
-        setShowThankYou={setShowThankYou}
-        setShowFindForm={setShowFindForm}
-        setShowEmailForm={setShowEmailForm}
-        showEmailForm={showEmailForm}
-        dataUser={dataUser}
-        emailData={emailData}
-        setEmailData={setEmailData}
-        setDataUser={setDataUser}
-        clientId={clientId}
-        endpoints={endpoints}
-        backendURLBase={backendURLBase}
-        backendURLBaseServices={backendURLBaseServices}
-        mainData={mainData}
-        questions={questions}
-        allDataIn={allDataIn}
-        setAllDataIn={setAllDataIn}
-        
-        setShowMainContainer={setShowMainContainer}
-        showManualEmailForm={showManualEmailForm}
-        setShowManualEmailForm={setShowManualEmailForm}
-      />
+      
     </>
   );
 };
 
-export default EmailForm;
+export default ManualEmailForm;

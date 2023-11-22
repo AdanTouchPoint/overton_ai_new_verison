@@ -10,7 +10,7 @@ import { fetchTYM } from './assets/petitions/fetchTYM';
 import { fetchMainContent } from './assets/petitions/fetchMainContent';
 import { fetchAllLeads } from './assets/petitions/fetchLeads';
 import { fetchConfig } from './assets/petitions/fetchConfig';
-
+import {fetchColors} from './assets/petitions/fetchColors'
 //require('dotenv').config()
 function Home() {
   const [configurations , setConfigurations]= useState({
@@ -42,6 +42,7 @@ function Home() {
         toSaveLeads:'/leads/',
         toSendEmails:'/email-builder/',
         toGetAllLeads:'/leads/',
+        toGetColors:'/theme/'
       })
     const [mp, setMp] = useState([])
     const [senator, setSenator] = useState([])
@@ -80,6 +81,18 @@ function Home() {
     })
     const [loading, setLoading] = useState(true)
     const [allDataIn, setAllDataIn] = useState([])
+    const [colors, setColors] = useState({
+      // background_color: '#222344',
+      // text_color:'#fff',
+      // label_color:'#fff',
+      // input_color:'#374160',
+      // link_color:'#47C8FE',
+      // input_text_color:'#B1BFED',
+      // buttonA_color:'#FA1500',
+      // buttonA_text_color:'#fff',
+      // buttonB_text_colot:'#fff',
+      // buttonB_color:'#2E3752'
+    })
     useEffect(() => {
 
         async function fetchData() {
@@ -87,27 +100,49 @@ function Home() {
             fetchConfig('GET', backendURLBase, endpoints.toGetConfs, clientId, setConfigurations),
             fetchAllLeads('GET', backendURLBase, endpoints.toGetAllLeads, clientId, setLeads),
             fetchMainContent('GET', backendURLBase, endpoints.toGetMainData, clientId, '', setMainData),
+            fetchTweet('GET', backendURLBase, endpoints.toGetTweets, clientId, '', setTweet),
+            fetchTYM('GET', backendURLBase, endpoints.toGetThankYouMessage, clientId, '', setTypData),
+            fetchColors('GET', backendURLBase, endpoints.toGetColors, clientId, '', setColors, colors )
             //fetchEmailData('GET', backendURLBase, endpoints.toGetQuestions, clientId, "", setDataUser),
             //fetchStatesData('GET', backendURLBase, endpoints.toGetAllRepresentatives, clientId, '', setStates),
-            fetchTweet('GET', backendURLBase, endpoints.toGetTweets, clientId, '', setTweet),
             //fetchQuestions('GET', backendURLBase, endpoints.toGetQuestions, clientId, '', setDataQuestions),
-            fetchTYM('GET', backendURLBase, endpoints.toGetThankYouMessage, clientId, '', setTypData)
           ]).then(() => {
-            setLoading(false) // cambia el estado a "false" cuando todas las consultas se hayan completado
+            
+            setLoading(false) 
+            
+            
+             
+            // cambia el estado a "false" cuando todas las consultas se hayan completado
           }).catch((error) => console.error(error))
         }
         fetchData()
     },[])
+    useEffect(() => {
+      if (colors && Object.keys(colors).length !== 0) {
+        // Verifica que colors no sea undefined y no esté vacío
+        document.documentElement.style.setProperty('--main-bg-color', colors.background_color);
+        document.documentElement.style.setProperty('--main-texts-color', colors.text_color);
+        document.documentElement.style.setProperty('--main-inputs-bg-color', colors.input_color);
+        document.documentElement.style.setProperty('--main-option-text-and-border-color', colors.input_text_color);
+        document.documentElement.style.setProperty('--links-checkbox-somebtns-color', colors.link_color);
+        document.documentElement.style.setProperty('--primary-btn-bg-color', colors.buttonA_color);
+        document.documentElement.style.setProperty('--primary-btn-font-color', colors.buttonA_text_color);
+        document.documentElement.style.setProperty('--back-btns-bg-color', colors.buttonB_color);
+        document.documentElement.style.setProperty('--back-btns-font-color', colors.buttonB_text_colot);
+      }
+    }, [colors]);
     
 
 
     return(
       <>
-        {/* <LoadingMainForm/> */}
+      
       {
-        loading && <LoadingMainForm cl={"spinner-container"} />
+        loading &&  <LoadingMainForm cl={"spinner-container"} />
       }
+      
       {
+        
         !loading && (
           <MainForm
               configurations={configurations}
@@ -135,9 +170,11 @@ function Home() {
               setQuestions={setQuestions}
               allDataIn={allDataIn}
               setAllDataIn={setAllDataIn}
+              colors={colors}
           />
 
         )
+        
       }
       
       </>

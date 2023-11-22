@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Button from "react-bootstrap/cjs/Button";
 import Modal from 'react-bootstrap/Modal';
 
-const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm}) => {
+const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm, setShowMainContainer, showMainContainer}) => {
     const [checklistStates, setChecklistStates] = useState(Array(emails?.length).fill(true));
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -26,7 +26,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
       if(checklistStates.every(state => !state)) {
         handleShow();
         setShowEmailForm(true);
-        setShowFindForm(false);
+        setShowFindForm(true);
 
       } else {
         setAllDataIn(selectedEmails);
@@ -35,12 +35,13 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
         });
         setShowEmailForm(false);
         setShowFindForm(true);
-        setShowListSelect(true)
+        setShowListSelect(true);
+        setShowMainContainer(true);
       }
     };
     return (
         <>
-        <div className={'buttonsContainer'}>
+        <div className={'buttons-list-container list-container'}>
             {emails?.map((email, index) => (
                 <label key={index} className='list-mp-row' >
                     <input
@@ -48,26 +49,27 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
                     type='checkbox'
                     checked={checklistStates[index]}
                     onChange={() => toggleChecklist(index)}
+                    className='form-check-input'
                     />
                     <h5>{email.name}</h5>
                 </label>
             ))}
         </div>
         <div className='btn-container-checklist'>
-            <div className={'buttons'}>
+            
                 <div>
-                    <Button id="representativeList-button" className='list-button' size={'md'} variant={'dark'} onClick={click}>
-                    Proceed to Email
+                    <Button id="representativeList-button" className='back-button' size={'lg'}  onClick={back}>
+                    Back
                     </Button>
                 </div>
                 <div>
-                    <Button id="representativeList-button" className='list-button' size={'md'} variant={'dark'} onClick={back}>
-                    back
+                    <Button id="representativeList-button" className='continue-button' size={'lg'}  onClick={click}>
+                    Continue
                     </Button>
                 </div>
-            </div>
+            
         </div>
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} className='advice-modal'>
         <Modal.Header closeButton>
           <Modal.Title>Advice</Modal.Title>
         </Modal.Header>

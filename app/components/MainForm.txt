@@ -316,7 +316,7 @@ setShowList(true)
 
             <h5 className="representative-position">{mainData.senatorLabel ? mainData.senatorLabel : 'Senators'}</h5>
             <div className="representatives-container">
-              { senator && senator.length > 0 ? (
+              {senator.length > 0 ? (
                 senator.map((mps, index) => (
                   <List
                   setMany={setMany}
@@ -334,7 +334,6 @@ setShowList(true)
                     setShowList={setShowList}
                     showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
-                  colors={colors}
                   />
                 ))
               ) : (
@@ -352,7 +351,7 @@ setShowList(true)
 
             <h5 className="representative-position">{mainData.positionName ? mainData.positionName : 'MP`S'}</h5>
             <div className="representatives-container">
-              {mp && mp.length > 0 ? (
+              {mp.length > 0 ? (
                 mp.map((mps, index) => (
                   <List
                   setMany={setMany}
@@ -370,7 +369,6 @@ setShowList(true)
                   tweet={tweet}
                   showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
-                  colors={colors}
                   />
                 ))
               ) : (
@@ -463,9 +461,9 @@ setShowList(true)
         typData={typData}
         showThankYou={showThankYou}
         setShowMainContainer={setShowMainContainer}
-        colors={colors}
       />
     </div>
   );
 };
 export default MainForm;
+
