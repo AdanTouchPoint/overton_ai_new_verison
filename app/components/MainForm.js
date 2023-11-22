@@ -316,7 +316,7 @@ setShowList(true)
 
             <h5 className="representative-position">{mainData.senatorLabel ? mainData.senatorLabel : 'Senators'}</h5>
             <div className="representatives-container">
-              {senator.length > 0 ? (
+              { senator && senator.length > 0 ? (
                 senator.map((mps, index) => (
                   <List
                   setMany={setMany}
@@ -352,7 +352,7 @@ setShowList(true)
 
             <h5 className="representative-position">{mainData.positionName ? mainData.positionName : 'MP`S'}</h5>
             <div className="representatives-container">
-              {mp.length > 0 ? (
+              {mp && mp.length > 0 ? (
                 mp.map((mps, index) => (
                   <List
                   setMany={setMany}
