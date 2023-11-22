@@ -76,7 +76,7 @@ const List = ({
       loading("spinner.conatinerB")
     ) : (
       <>
-        {console.log(colors, 'colors-state')}
+        
         <div className={"list-content-location"}>
           <div>
             <h3 className="representative-name"> {mps.name} </h3>

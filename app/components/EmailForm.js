@@ -62,26 +62,53 @@ const EmailForm = ({
   
   const handleMessageChange = (e) => {
     e.preventDefault();
-    setDataUser({ ...emailData, [e.target.name]: e.target.value });
-    if(!dataUser.message || dataUser.message === ''){
-      setAbleGenIA(false)
+    setDataUser({
+      ...dataUser,
+      subject: e.target.name === "subject" ? e.target.value : dataUser.subject,
+      message: e.target.name === "message" ? e.target.value : dataUser.message,
+    });
+    if (!dataUser.message || dataUser.message === '') {
+      setAbleGenIA(false);
     }
+    console.log(dataUser);
   };
   const handleContinue = async (e) => {
     e.preventDefault();
-    if (many === true) {
-      console.log(allDataIn);
-      const payload = await fetchData(
-        "GET",
-        backendURLBaseServices,
-        endpoints.toSendBatchEmails,
-        clientId,
-        `to=${allDataIn}&subject=${dataUser.subject}&firstName=${
-          dataUser.userName
-        }&emailData=${
-          dataUser.emailUser
-        }&text=${requestCompletion.message.replace(/\n\r?/g, "<br/>")}`
-      );
+    try {
+      let payload;
+      console.log(dataUser, 'sendmany')
+      if (many === true) {
+        payload = await fetchData(
+          "GET",
+          backendURLBaseServices,
+          endpoints.toSendBatchEmails,
+          clientId,
+          `to=${allDataIn}&subject=${dataUser.subject}&firstName=${
+            dataUser.userName
+          }&emailData=${
+            dataUser.emailUser
+          }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
+        )
+      } else{
+        console.log(allDataIn);
+        payload = await fetchData(
+          "GET",
+          backendURLBaseServices,
+          endpoints.toSendBatchEmails,
+          clientId,
+          `to=${emailData.email}&subject=${dataUser.subject}&firstName=${
+            dataUser.userName
+          }&emailData=${
+            dataUser.emailUser
+          }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
+        );
+
+      }
+        
+      
+  
+      console.log(payload.success);
+      const messageEmail = dataUser.message.replace(/\n\r?/g, "<br/>")
       if (payload.success === true) {
         fetchLeads(
           true,
@@ -90,15 +117,14 @@ const EmailForm = ({
           clientId,
           dataUser,
           emailData,
-          emailMessage
+          messageEmail
         );
         setShowEmailForm(true);
         setShowFindForm(true);
         setShowEmailPreview(true);
         setShowThankYou(false);
         setLeads(leads + 1);
-      }
-      if (payload.success !== true) {
+      } else {
         fetchLeads(
           false,
           backendURLBase,
@@ -106,73 +132,14 @@ const EmailForm = ({
           clientId,
           dataUser,
           emailData,
-          emailMessage
+          messageEmail
         );
-        return (
-          <Alert>
-            El correo no ha sido enviado con éxito, por favor intente de nuevo
-            más tarde
-            <Button
-              className={"button-email-form"}
-              variant={"dark"}
-              onClick={back}
-            >
-              Regresar
-            </Button>
-          </Alert>
-        );
+        throw new Error("Email not sent successfully");
       }
-      return;
-    }
-    const payload = await fetchData(
-      "GET",
-      backendURLBaseServices,
-      endpoints.toSendEmails,
-      clientId,
-      `&questions=${urlEncode(
-        JSON.stringify(requestCompletion)
-      )}&user=${urlEncode(JSON.stringify(dataUser))}`
-    );
-    console.log(payload.success);
-    if (payload.success === true) {
-      fetchLeads(
-        true,
-        backendURLBase,
-        endpoints,
-        clientId,
-        dataUser,
-        emailData,
-        emailMessage
-      );
-      setShowEmailForm(true);
-      setShowFindForm(true);
-      setShowEmailPreview(true);
-      setShowThankYou(false);
-      setLeads(leads + 1);
-    }
-    if (payload.success !== true) {
-      fetchLeads(
-        false,
-        backendURLBase,
-        endpoints,
-        clientId,
-        dataUser,
-        emailData,
-        emailMessage
-      );
-      return (
-        <Alert>
-          El correo no ha sido enviado con éxito, por favor intente de nuevo más
-          tarde
-          <Button
-            className={"button-email-form"}
-            variant={"dark"}
-            onClick={back}
-          >
-            Regresar
-          </Button>
-        </Alert>
-      );
+    } catch (error) {
+      console.error("Error handling continue:", error);
+      // Mostrar un mensaje de error al usuario, puedes agregar un estado para manejarlo
+      setError(true);
     }
   };
   const back = (e) => {
@@ -187,21 +154,24 @@ const EmailForm = ({
   };
   const clickAI = async (e) => {
     e.preventDefault();
-    console.log(dataUser.message);
-    if(!dataUser.message || dataUser.message === ''){
-      // setAbleGenIA(false)
-
+    if (!dataUser.message || dataUser.message === '') {
+      // setAbleGenIA(false); // Comentado por ahora
     }
-    const text = await complete(dataUser.message);
-    let response = await JSON.parse(text);
-    console.log(text);
-    setRequestCompletion({ message: response.message });
-    setDataUser({
-      ...dataUser,
-      subject: response.subject,
-      message: response.message,
-    });
-    setcontinueBtn(false)
+    try {
+      const text = await complete(dataUser.message);
+      const response = JSON.parse(text);
+      console.log(text);
+      setRequestCompletion({ message: response.message });
+      setDataUser({
+        ...dataUser,
+        subject: response.subject || '',
+        message: response.message || '',
+      });
+      setcontinueBtn(false);
+    } catch (error) {
+      console.error("Error in AI generation:", error);
+      // Manejar el error, posiblemente mostrando un mensaje al usuario
+    }
   };
 
   const manualMailChange = async (e) =>{

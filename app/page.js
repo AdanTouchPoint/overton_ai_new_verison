@@ -82,16 +82,6 @@ function Home() {
     const [loading, setLoading] = useState(true)
     const [allDataIn, setAllDataIn] = useState([])
     const [colors, setColors] = useState({
-      // background_color: '#222344',
-      // text_color:'#fff',
-      // label_color:'#fff',
-      // input_color:'#374160',
-      // link_color:'#47C8FE',
-      // input_text_color:'#B1BFED',
-      // buttonA_color:'#FA1500',
-      // buttonA_text_color:'#fff',
-      // buttonB_text_colot:'#fff',
-      // buttonB_color:'#2E3752'
     })
     useEffect(() => {
 

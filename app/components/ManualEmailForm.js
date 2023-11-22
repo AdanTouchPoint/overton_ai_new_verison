@@ -43,18 +43,35 @@ const ManualEmailForm = ({
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState(false);
   const [showLoadSpin, setShowLoadSpin] = useState(false);
-  const { userName, subject } = dataUser;
+
   const [emailMessage, setEmailMessage] = useState({});
-  const [requestCompletion, setRequestCompletion] = useState([]);
-  const [ableGenIA, setAbleGenIA] = useState(true);
   const [continueBtn, setcontinueBtn] = useState(true);
   
+  
+  // const handleMessageChange = (e) => {
+  //   e.preventDefault();
+  //   setDataUser({ ...emailData, [e.target.name]: e.target.value });
+  //   console.log(dataUser.message, 'datauser')
+  // };
+  // const handleSubjectChange = (e) =>{
+  //   e.preventDefault();
+  //   setDataUser({ ...dataUser, [e.target.name]: e.target.value });
+  //   console.log(dataUser.subject, 'datauser')
+  // }
   const handleMessageChange = (e) => {
     e.preventDefault();
-    setDataUser({ ...emailData, [e.target.name]: e.target.value });
+    setDataUser({
+      ...dataUser,
+      subject: e.target.name === "subject" ? e.target.value : dataUser.subject,
+      message: e.target.name === "message" ? e.target.value : dataUser.message,
+    });
+    
+    console.log(dataUser);
   };
   const handleSend = async (e) => {
     e.preventDefault();
+    let currentSubject = dataUser.message;
+    console.log(currentSubject)
     if (many === true) {
       console.log(allDataIn);
       const payload = await fetchData(
@@ -62,12 +79,13 @@ const ManualEmailForm = ({
         backendURLBaseServices,
         endpoints.toSendBatchEmails,
         clientId,
-        `to=${allDataIn}&subject=${dataUser.subject}&firstName=${
+        `to=${allDataIn}&subject=${currentSubject}&firstName=${
           dataUser.userName
         }&emailData=${
           dataUser.emailUser
         }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
       );
+      const messageEmail = dataUser.message.replace(/\n\r?/g, "<br/>")
       if (payload.success === true) {
         fetchLeads(
           true,
@@ -76,7 +94,7 @@ const ManualEmailForm = ({
           clientId,
           dataUser,
           emailData,
-          emailMessage
+          messageEmail
         );
         setShowManualEmailForm(true);
         setShowFindForm(true);
@@ -92,7 +110,7 @@ const ManualEmailForm = ({
           clientId,
           dataUser,
           emailData,
-          emailMessage
+          messageEmail
         );
         return (
           <Alert>
@@ -110,16 +128,19 @@ const ManualEmailForm = ({
       }
       return;
     }
+    console.log(dataUser.subject, 'datauser subject')
     const payload = await fetchData(
       "GET",
       backendURLBaseServices,
-      endpoints.toSendEmails,
+      endpoints.toSendBatchEmails,
       clientId,
-      `&questions=${urlEncode(
-        JSON.stringify(requestCompletion)
-      )}&user=${urlEncode(JSON.stringify(dataUser))}`
+      `to=${emailData.email}&subject=${currentSubject}&firstName=${
+        dataUser.userName
+      }&emailData=${
+        dataUser.emailUser
+      }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
     );
-    console.log(payload.success);
+    const messageEmail = dataUser.message.replace(/\n\r?/g, "<br/>")
     if (payload.success === true) {
       fetchLeads(
         true,
@@ -128,7 +149,7 @@ const ManualEmailForm = ({
         clientId,
         dataUser,
         emailData,
-        emailMessage
+        messageEmail
       );
       setShowManualEmailForm(true);
       setShowFindForm(true);
@@ -144,7 +165,7 @@ const ManualEmailForm = ({
         clientId,
         dataUser,
         emailData,
-        emailMessage
+        messageEmail
       );
       return (
         <Alert>
@@ -226,6 +247,7 @@ const ManualEmailForm = ({
                           type="text"
                           defaultValue={dataUser.subject}
                           className="subject-input"
+                          
                         />
                       </Form.Group>
                    
