@@ -4,7 +4,7 @@ export function urlEncode(text) {
   }
 
   const mailerExtracter =  (mps) => {
-    console.log(mps)
+    
     let emailsArr =[];
     for (let index = 0; index < mps.length; index++) {
         emailsArr.push(mps[index]?.email ? mps[index]?.email : mps[index]?.contact )

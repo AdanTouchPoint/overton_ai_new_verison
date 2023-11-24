@@ -4,7 +4,7 @@ const fetchRepresentatives = async (petitionMethod, backendURLBase, endpoint, cl
     const datos = await fetchData(petitionMethod, backendURLBase, endpoint, clientId, params)
     
     let query = datos.mps;
-    console.log(sendMany, 'sen many')
+    // console.log(sendMany, 'sen many')
     let fill = await query.filter((el) => el.govt_type == 'Federal MPs');
     setMp(fill);
     setSenator(datos.data)

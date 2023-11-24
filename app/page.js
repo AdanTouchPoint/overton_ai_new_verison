@@ -83,13 +83,14 @@ function Home() {
     const [allDataIn, setAllDataIn] = useState([])
     const [colors, setColors] = useState({
     })
+    const [formFields, setFormFields] = useState([])
     useEffect(() => {
 
         async function fetchData() {
           await Promise.all([
             fetchConfig('GET', backendURLBase, endpoints.toGetConfs, clientId, setConfigurations),
             fetchAllLeads('GET', backendURLBase, endpoints.toGetAllLeads, clientId, setLeads),
-            fetchMainContent('GET', backendURLBase, endpoints.toGetMainData, clientId, '', setMainData),
+            fetchMainContent('GET', backendURLBase, endpoints.toGetMainData, clientId, '', setMainData, setFormFields),
             fetchTweet('GET', backendURLBase, endpoints.toGetTweets, clientId, '', setTweet),
             fetchTYM('GET', backendURLBase, endpoints.toGetThankYouMessage, clientId, '', setTypData),
             fetchColors('GET', backendURLBase, endpoints.toGetColors, clientId, '', setColors, colors )
@@ -101,11 +102,11 @@ function Home() {
             setLoading(false) 
             
             
-             
             // cambia el estado a "false" cuando todas las consultas se hayan completado
           }).catch((error) => console.error(error))
         }
         fetchData()
+        
     },[])
     useEffect(() => {
       if (colors && Object.keys(colors).length !== 0) {
@@ -152,6 +153,7 @@ function Home() {
               tweet={tweet}
               typData={typData}
               mainData={mainData}
+              formFields={formFields}
               backendURLBase={backendURLBase}
               backendURLBaseServices={backendURLBaseServices}
               dataQuestions={dataQuestions}

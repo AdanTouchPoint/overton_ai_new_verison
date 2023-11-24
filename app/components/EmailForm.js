@@ -70,13 +70,13 @@ const EmailForm = ({
     if (!dataUser.message || dataUser.message === '') {
       setAbleGenIA(false);
     }
-    console.log(dataUser);
+    // console.log(dataUser);
   };
   const handleContinue = async (e) => {
     e.preventDefault();
     try {
       let payload;
-      console.log(dataUser, 'sendmany')
+      // console.log(dataUser, 'sendmany')
       if (many === true) {
         payload = await fetchData(
           "GET",
@@ -90,7 +90,7 @@ const EmailForm = ({
           }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
         )
       } else{
-        console.log(allDataIn);
+        // console.log(allDataIn);
         payload = await fetchData(
           "GET",
           backendURLBaseServices,
@@ -107,7 +107,7 @@ const EmailForm = ({
         
       
   
-      console.log(payload.success);
+      // console.log(payload.success);
       const messageEmail = dataUser.message.replace(/\n\r?/g, "<br/>")
       if (payload.success === true) {
         fetchLeads(
