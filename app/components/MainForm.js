@@ -37,7 +37,8 @@ const MainForm = ({
   configurations,
   allDataIn,
   setAllDataIn,
-  colors
+  colors,
+  formFields,
 }) => {
   const [showLoadSpin, setShowLoadSpin] = useState(false);
   const [showList, setShowList] = useState(true);
@@ -47,7 +48,7 @@ const MainForm = ({
   const [error, setError] = useState(false);
   const [showThankYou, setShowThankYou] = useState(true);
   const [tac, setTac] = useState(false);
-  const { formFields } = mainData;
+  // const { formFields } = mainData;
   const [showListSelect,setShowListSelect] = useState(true)
   const [emails,setEmails]= useState()
   const [many, setMany] =  useState(false)
@@ -90,7 +91,7 @@ setShowList(true)
       return emailRegex.test(email.trim());
     };
     for (let key in dataUser) {
-      console.log(key);
+      // console.log(key);
       let value = dataUser[key];
       if (value === "") return false;
       if (key === "emailUser") {
@@ -106,7 +107,7 @@ setShowList(true)
   }
   const click = async (e) => {
     e.preventDefault();
-    console.log(dataUser, 'dataUser')
+    // console.log(dataUser, 'dataUser')
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.preventDefault();
@@ -191,7 +192,6 @@ setShowList(true)
               before of after your email or postcode.
             </Alert>
           ) : null}
-         
           <Form
             name="fm-find"
             onSubmit={click}
@@ -210,7 +210,7 @@ setShowList(true)
                 return field.type !== "state" ? (
                   <Form.Group  className="field" key={key}>
                     <Form.Label className="select-label main-texts-color labels-text-format">
-                      {field.label}
+                      {field.label}*
                     </Form.Label>
                     <Form.Control
                       id="emailInput-mainForm"
@@ -225,7 +225,7 @@ setShowList(true)
                 ) : states.length > 0 ? (
                   <Form.Group className={"field"} key={key}>
                     <Form.Label className="select-label">
-                      {field.label}
+                      {field.label}*
                     </Form.Label>
                     <Form.Select
                       aria-label="DefaulValue"
@@ -247,7 +247,7 @@ setShowList(true)
                 ) : (
                   <Form.Group className="field" key={key}>
                     <Form.Label className="select-label">
-                      {field.label}
+                      {field.label}*
                     </Form.Label>
                     <Form.Control
                       id="emailInput-mainForm"
@@ -279,7 +279,7 @@ setShowList(true)
                     rel={"noreferrer"}
                     href={mainData.termsAndConditionsURL}
                   >
-                    {mainData.termsAndConditionsTxt}
+                    Terms and Conditions
                   </a>
                 }
               />
@@ -295,7 +295,7 @@ setShowList(true)
                 onClick={click}
                 className={"u-full-width capitalize-style find-btn-main-form"}
               >
-                {mainData.findBtnText}
+                Continue
               </Button>
             </Form.Group>
             {showLoadSpin ? (

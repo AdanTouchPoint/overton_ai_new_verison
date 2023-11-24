@@ -19,9 +19,9 @@ const fetchLeads = (
       emailData?.name
     }&emailMessage=${JSON.stringify(emailMessage)}&sended=${successResponse}&subject=${dataUser.subject}&city=${dataUser.city ? dataUser.city : "NA"}&party=${dataUser.party ? dataUser.party : "NA"}`
   );
-  console.log(clientId, 'clientID')
-  console.log(dataUser, 'subject')
-  console.log(emailMessage, 'message')
+  // console.log(clientId, 'clientID')
+  // console.log(dataUser, 'subject')
+  // console.log(emailMessage, 'message')
 };
 
 const fetchAllLeads = async (petitionMethod,backendURLBase, endpoint, clientId, setLeads) => {

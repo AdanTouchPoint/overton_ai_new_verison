@@ -63,7 +63,7 @@ const EmailPreview = ({
         JSON.stringify(dataUser)
       )}`
     );
-    console.log(payload.success);
+    // console.log(payload.success);
     if (payload.success === true) {
       fetchLeads(
         true,
@@ -112,7 +112,7 @@ const EmailPreview = ({
     scroll.scrollTo(1000)
     setShowEmailPreview(true);
   };
-console.log(emailMessage.message)
+// console.log(emailMessage.message)
   return (
     <div className="emailContainer" hidden={showEmailPreview} >
       <h1>Instructions</h1>

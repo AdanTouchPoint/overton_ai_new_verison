@@ -66,14 +66,14 @@ const ManualEmailForm = ({
       message: e.target.name === "message" ? e.target.value : dataUser.message,
     });
     
-    console.log(dataUser);
+    // console.log(dataUser);
   };
   const handleSend = async (e) => {
     e.preventDefault();
     let currentSubject = dataUser.message;
-    console.log(currentSubject)
+    // console.log(currentSubject)
     if (many === true) {
-      console.log(allDataIn);
+      // console.log(allDataIn);
       const payload = await fetchData(
         "GET",
         backendURLBaseServices,
@@ -128,7 +128,7 @@ const ManualEmailForm = ({
       }
       return;
     }
-    console.log(dataUser.subject, 'datauser subject')
+    // console.log(dataUser.subject, 'datauser subject')
     const payload = await fetchData(
       "GET",
       backendURLBaseServices,
