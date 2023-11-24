@@ -207,8 +207,6 @@ setShowList(true)
             {/* <h3 className="find-her-mp-text main-texts-color">{mainData.firstFormLabel1}</h3> */}
             <div className="fields-form">
               {formFields.map((field, key) => {
-                console.log(field, key, mainData, 'Main Data');
-                console.log(colors, 'COLORS')
                 return field.type !== "state" ? (
                   <Form.Group  className="field" key={key}>
                     <Form.Label className="select-label main-texts-color labels-text-format">

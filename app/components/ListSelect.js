@@ -50,6 +50,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
                     checked={checklistStates[index]}
                     onChange={() => toggleChecklist(index)}
                     className='form-check-input'
+                    defaultChecked
                     />
                     <h5>{email.name}</h5>
                 </label>

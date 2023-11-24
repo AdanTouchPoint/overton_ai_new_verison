@@ -5,7 +5,8 @@ const fetchLeads = (
   endpoints,
   clientId,
   dataUser,
-  emailData,emailMessage
+  emailData,
+  emailMessage
 ) => {
   fetchData(
     "POST",
@@ -16,8 +17,11 @@ const fetchLeads = (
       dataUser.postalCode ? dataUser.postalCode : "NA"
     }&emailData=${dataUser?.emailUser}&representative=${
       emailData?.name
-    }&emailMessage=${JSON.stringify(emailMessage)}&sended=${successResponse}&subject=${dataUser?.subject}&city=${dataUser?.city}&party=${dataUser?.party}`
+    }&emailMessage=${JSON.stringify(emailMessage)}&sended=${successResponse}&subject=${dataUser.subject}&city=${dataUser.city ? dataUser.city : "NA"}&party=${dataUser.party ? dataUser.party : "NA"}`
   );
+  console.log(clientId, 'clientID')
+  console.log(dataUser, 'subject')
+  console.log(emailMessage, 'message')
 };
 
 const fetchAllLeads = async (petitionMethod,backendURLBase, endpoint, clientId, setLeads) => {
