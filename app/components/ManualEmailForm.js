@@ -4,12 +4,8 @@ import Button from "react-bootstrap/cjs/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/cjs/Col";
 import Alert from "react-bootstrap/Alert";
-import Loader from "react-loader-spinner";
 import { fetchData } from "../assets/petitions/fetchData";
 import { fetchLeads } from "../assets/petitions/fetchLeads";
-import { urlEncode } from "../assets/helpers/utilities";
-import { useCompletion } from "ai/react";
-import EmailPreview from "./EmailPreview";
 import { animateScroll as scroll } from "react-scroll";
 import LoadingMainForm from "./LoadingMainForm";
 
