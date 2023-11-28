@@ -302,13 +302,16 @@ display: flex;
   margin-top: 50px;
   min-width:250px;
 }
-.back-button{
-  background: var(--back-btns-bg-color);
+.back-button, .back-button:active, .back-button:focus, .back-button:focus-visible{
+  background: var(--back-btns-bg-color) !important;
   color: var(--back-btns-font-color);
+  border-color:var(--back-btns-bg-color) !important;
+  box-shadow: none;
 }
 .continue-button, .secundary-btn:hover{
   background: var(--primary-btn-bg-color);
   color: var(--primary-btn-font-color);
+  
 }
 .continue-button:hover{
   background: var(--links-checkbox-somebtns-color);
@@ -330,7 +333,23 @@ display: flex;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
+  align-items: center;
   padding: 15px 24px 15px 32px;
+  text-transform: capitalize;
+}
+.label-ia-prompt{
+  color: var(--main-texts-color);
+font-family: Inter;
+font-size: 22px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+margin-top: 30px;
+}
+.list-mp-row-info{
+  display: flex;
+ flex-direction: column;
+ row-gap: 5px;   
 }
 
 .ia-instructions-title{
@@ -360,10 +379,12 @@ display: flex;
   border-color: var(--main-option-text-and-border-color);
   box-shadow: none;
   font-size: 25px;
+  
 }
-.secundary-btn, .secundary-btn:disabled{
-  background: var(--links-checkbox-somebtns-color);
-  color: var(--main-bg-color);
+.secundary-btn, .secundary-btn:disabled, .secundary-btn:active, .secundary-btn:focus-visible{
+  background: var(--links-checkbox-somebtns-color) !important;
+  color: var(--main-bg-color) !important;
+  box-shadow: none;
 }
 .change-to-manual-email-container{
   display: flex;

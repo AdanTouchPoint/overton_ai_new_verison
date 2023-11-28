@@ -12,7 +12,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
       newChecklistStates[index] = !newChecklistStates[index];
       setChecklistStates(newChecklistStates);
     };
-    //console.log(emails)
+    // console.log(emails)
   const back = (e) => {
     e.preventDefault;
     setShowListSelect(true)
@@ -47,12 +47,16 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
                     <input
                     id="representativeList-checkbox"
                     type='checkbox'
-                    checked={checklistStates[index]}
+                    checked={checklistStates[index] || true}
                     onChange={() => toggleChecklist(index)}
                     className='form-check-input'
-                    defaultChecked
+                    // defaultChecked
                     />
-                    <h5>{email.name}</h5>
+                    <h5 className='list-mp-row-info'>
+                      {email.name} 
+                      <span>{email.govt_type}, {email.party}</span>
+                    </h5>
+                    
                 </label>
             ))}
         </div>

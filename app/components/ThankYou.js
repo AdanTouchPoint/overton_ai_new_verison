@@ -45,9 +45,7 @@ const ThankYou = ({
             onClick={click}
             className="capitalize-style link-simulation do-again-btn"
           >
-            {typData.data?.docs[0]
-              ? typData.data?.docs[0].repeatButtonTyp
-              : typData.repeatButtonTyp}
+            Contact More Politicians!
           </span>
         </div>
     </div>

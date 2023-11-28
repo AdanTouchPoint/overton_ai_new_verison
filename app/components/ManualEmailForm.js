@@ -214,23 +214,13 @@ const ManualEmailForm = ({
           validated={validated}
         >
           <div>
-          
-            {
-              continueBtn ? (<>
-              <h3 className="ia-instructions-title main-text-title">Instructiones</h3>
+          {console.log(mainData, 'MainData')}
+          <>
+              <h3 className="ia-instructions-title main-text-title">{mainData.titleNoAI ? mainData.titleNoAI : 'Write your email'}</h3>
             <p className="ia-instructions-p main-text-instruction">
-              write how feel you about it and AI helps you to write a email for
-              you representatives
+              {mainData.intructionsNoAI? mainData.intructionsNoAI : 'Customer instructions for the user. Here the client can give the user recommendations on what to mention in the email and how to write the subject.'}
             </p>
-              </>) : (
-            <>
-            <h3 className="ia-instructions-title">{mainData.titlePreview ? mainData.titlePreview : 'Edit & Send'}</h3>
-            <p className="ia-instructions-p">{mainData.intructionsPreview ? mainData.intructionsPreview : 'Edit and/or send the email that was written for you by AI.'}</p> 
-            
-            </>  
-            
-            )
-            }
+          </>
             
               <div>
                 {" "}
@@ -238,7 +228,7 @@ const ManualEmailForm = ({
                   <Col>
                       <Form.Group>
                         <Form.Label className="subject-label">
-                          {mainData.emailFormSubjectPlaceholder ? mainData.emailFormSubjectPlaceholder : 'Subject Line'}
+                          Subject Line
                         </Form.Label>
                         <Form.Control
                           id="subject-emailform"
@@ -253,7 +243,7 @@ const ManualEmailForm = ({
                    
                     <Form.Group>
                       <Form.Label className="subject-label">
-                        {mainData.emailFormMessagePlaceholder ? mainData.emailFormMessagePlaceholder : 'Email'}
+                        Email
                       </Form.Label>
                       <Form.Control
                         id="message-emailform"

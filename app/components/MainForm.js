@@ -304,7 +304,7 @@ setShowList(true)
           </Form>
           <div className={"container senators-container"} hidden={showList}>
           <h3 className="main-texts-color instruction-text">
-            {mainData.instruction}
+          Select your representatives
           </h3>
             <div className="note-container">
               <span className="link-simulation links-checkboxes-color change-mode-list-btn" onClick={selectAll}>Email / all several representatives</span>
@@ -312,7 +312,7 @@ setShowList(true)
             </div>
             <div className="list-container">
 
-            <h5 className="representative-position">{mainData.senatorLabel ? mainData.senatorLabel : 'Senators'}</h5>
+            <h5 className="representative-position">Senators</h5>
             <div className="representatives-container">
               { senator && senator.length > 0 ? (
                 senator.map((mps, index) => (
@@ -348,7 +348,7 @@ setShowList(true)
 
             <div className="list-container">
 
-            <h5 className="representative-position">{mainData.positionName ? mainData.positionName : 'MP`S'}</h5>
+            <h5 className="representative-position">MP`S</h5>
             <div className="representatives-container">
               {mp && mp.length > 0 ? (
                 mp.map((mps, index) => (
@@ -384,7 +384,8 @@ setShowList(true)
           </div>
           <div className={"container senators-container"} hidden={showListSelect}>
           
-            <h2 className="main-texts-color instruction-text">{mainData.instruction}</h2>
+            <h2 className="main-texts-color instruction-text">Select all representatives
+you’d like to email</h2>
           
             <div className="representatives-container">
               {mp.length > 0 ? (

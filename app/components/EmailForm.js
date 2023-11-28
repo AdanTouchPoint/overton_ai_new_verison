@@ -205,18 +205,17 @@ const EmailForm = ({
           validated={validated}
         >
           <div>
-          
+          {console.log(mainData, 'Main Data')}
             {
               continueBtn ? (<>
-              <h3 className="ia-instructions-title main-text-title">Instructions</h3>
+              <h3 className="ia-instructions-title main-text-title">{mainData.titleAI ? mainData.titleAI : 'Describe your email to Ais'}</h3>
             <p className="ia-instructions-p main-text-instruction">
-              write how feel you about it and AI helps you to write a email for
-              you representatives
+            {mainData.intructionsAI ? mainData.intructionsAI : 'Customer instructions for the user. Here the client explains to the user how this function works, and tells them to briefly describe what they want to say in the email.'}
             </p>
               </>) : (
             <>
-            <h3 className="ia-instructions-title main-text-title">{mainData.titlePreview ? mainData.titlePreview : 'Edit & Send'}</h3>
-            <p className="ia-instructions-p main-text-instruction">{mainData.intructionsPreview ? mainData.intructionsPreview : 'Edit and/or send the email that was written for you by AI.'}</p> 
+            <h3 className="ia-instructions-title main-text-title">Edit & Send</h3>
+            <p className="ia-instructions-p main-text-instruction">Edit and/or send the email that was written for you by AI. </p> 
             
             </>  
             
@@ -224,13 +223,12 @@ const EmailForm = ({
             }
             
               <div>
-                {" "}
                 <div>
                   <Col>
                     {dataUser.subject ? (
                       <Form.Group>
-                        <Form.Label>
-                          {mainData.emailFormSubjectPlaceholder}
+                        <Form.Label className="label-ia-prompt">
+                          Subject Line
                         </Form.Label>
                         <Form.Control
                           id="subject-emailform"
@@ -242,9 +240,10 @@ const EmailForm = ({
                       </Form.Group>
                     ) : null}
                     <Form.Group>
-                      <Form.Label>
-                        {mainData.emailFormMessagePlaceholder}
-                      </Form.Label>
+                      {
+                        continueBtn ? (<Form.Label className="label-ia-prompt">Write Prompt or leave blank and click “Generate”</Form.Label>) : (<Form.Label className="label-ia-prompt">Email</Form.Label>)
+                      }
+                      
                       <Form.Control
                         id="message-emailform"
                         onChange={handleMessageChange}
