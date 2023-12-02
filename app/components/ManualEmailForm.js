@@ -36,7 +36,7 @@ const ManualEmailForm = ({
   isLoading
 }) => {
   const [showEmailPreview, setShowEmailPreview] = useState(true);
-  const [validated, setValidated] = useState(false);
+  const [valid, setValid] = useState(false);
   const [error, setError] = useState(false);
   const [showLoadSpin, setShowLoadSpin] = useState(false);
 
@@ -90,7 +90,8 @@ const ManualEmailForm = ({
           clientId,
           dataUser,
           emailData,
-          messageEmail
+          messageEmail,
+          'message-multiple-representatives-lead'
         );
         setShowManualEmailForm(true);
         setShowFindForm(true);
@@ -106,18 +107,18 @@ const ManualEmailForm = ({
           clientId,
           dataUser,
           emailData,
-          messageEmail
+          messageEmail,
+          'message-multiple-representatives-not-sended-lead'
         );
         return (
           <Alert>
-            El correo no ha sido enviado con éxito, por favor intente de nuevo
-            más tarde
+            The mail has not been sended succesfully, please try again later.
             <Button
               className={"button-email-form"}
               variant={"dark"}
               onClick={back}
             >
-              Regresar
+             Back
             </Button>
           </Alert>
         );
@@ -145,7 +146,8 @@ const ManualEmailForm = ({
         clientId,
         dataUser,
         emailData,
-        messageEmail
+        messageEmail,
+        'message-single-representative-lead'
       );
       setShowManualEmailForm(true);
       setShowFindForm(true);
@@ -161,7 +163,8 @@ const ManualEmailForm = ({
         clientId,
         dataUser,
         emailData,
-        messageEmail
+        messageEmail,
+        'message-sinlge-representative-not-sended-lead'
       );
       return (
         <Alert>
@@ -183,6 +186,7 @@ const ManualEmailForm = ({
     setShowList(false);
     setShowManualEmailForm(true);
     setShowMainContainer(false);
+    console.log(dataUser, 'dataUser')
   };
   const loading = (cl) => {
     scroll.scrollTo(1000);
@@ -207,10 +211,10 @@ const ManualEmailForm = ({
           name="fm-email"
           onSubmit={handleSend}
           noValidate
-          validated={validated}
+          validated={valid}
         >
           <div>
-          {console.log(mainData, 'MainData')}
+          
           <>
               <h3 className="ia-instructions-title main-text-title">{mainData.titleNoAI ? mainData.titleNoAI : 'Write your email'}</h3>
             <p className="ia-instructions-p main-text-instruction">

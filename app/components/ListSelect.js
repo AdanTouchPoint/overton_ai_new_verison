@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import Button from "react-bootstrap/cjs/Button";
 import Modal from 'react-bootstrap/Modal';
+import { fetchLeads } from '../assets/petitions/fetchLeads';
 
-const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm, setShowMainContainer, showMainContainer}) => {
-    const [checklistStates, setChecklistStates] = useState(Array(emails?.length).fill(true));
+const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm, setShowMainContainer, showMainContainer, emailData, leads, setLeads, backendURLBase, endpoints, clientId}) => {
+  const [checklistStates, setChecklistStates] = useState(emails?.map(() => true) || []);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = async() => setShow(true);
@@ -11,18 +12,18 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
       const newChecklistStates = [...checklistStates];
       newChecklistStates[index] = !newChecklistStates[index];
       setChecklistStates(newChecklistStates);
+      // console.log(checklistStates)
     };
     // console.log(emails)
   const back = (e) => {
-    e.preventDefault;
+    e.preventDefault();
     setShowListSelect(true)
     setShowList(false)
   }
     const click = async() => {
-      // console.log(emails)
       const selectedMps = await emails.filter((email, index) => checklistStates[index]);
       const selectedEmails = await selectedMps.map((mp) => mp.email ? mp.email.trim() : mp.contact.trim());
-      // console.log(selectedEmails, 'allDataIn')
+      //  console.log(selectedEmails, 'allDataIn')
       if(checklistStates.every(state => !state)) {
         handleShow();
         setShowEmailForm(true);
@@ -37,6 +38,17 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
         setShowFindForm(true);
         setShowListSelect(true);
         setShowMainContainer(true);
+        fetchLeads(
+          true,
+          backendURLBase,
+          endpoints,
+          clientId,
+          dataUser,
+          emailData,
+          'NA',
+          'Multiples-representatives-selected-lead'
+        );
+        setLeads(leads + 1)
       }
     };
     return (
@@ -45,12 +57,11 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
             {emails?.map((email, index) => (
                 <label key={index} className='list-mp-row' >
                     <input
-                    id="representativeList-checkbox"
-                    type='checkbox'
-                    checked={checklistStates[index] || true}
-                    onChange={() => toggleChecklist(index)}
-                    className='form-check-input'
-                    // defaultChecked
+                        id="representativeList-checkbox"
+                        type='checkbox'
+                        checked={checklistStates[index]}
+                        onChange={() => toggleChecklist(index)}
+                        className='form-check-input'
                     />
                     <h5 className='list-mp-row-info'>
                       {email.name} 

@@ -6,6 +6,7 @@ import LoadingMainForm from "./LoadingMainForm";
 import { Form } from "react-bootstrap";
 import { generateEtags } from "@/next.config";
 import MobileButtons from "./MobileButtons";
+import { fetchLeads } from "../assets/petitions/fetchLeads";
 const List = ({
   setMany,
   mps,
@@ -18,7 +19,13 @@ const List = ({
   setShowList,
   showMainContainer,
   setShowMainContainer,
-  colors
+  colors,
+  emailData,
+  leads,
+  setLeads,
+  backendURLBase, 
+  endpoints,
+  clientId
 }) => {
   const [isMouseOver, setIsMouseOver] = useState(false);
 
@@ -49,6 +56,17 @@ const List = ({
   });
   const click = (e) => {
     e.preventDefault();
+    fetchLeads(
+      true,
+      backendURLBase,
+      endpoints,
+      clientId,
+      dataUser,
+      emailData,
+      'NA',
+      'mail-lead'
+    );
+    setLeads(leads + 1)
     setEmailData({
       ...dataUser,
       ...mps,
@@ -63,10 +81,33 @@ const List = ({
       e.preventDefault()
       const text = await complete(`write a tweet using this prompt: ${tweet}`)
       generateTweet(text)
+      fetchLeads(
+        true,
+        backendURLBase,
+        endpoints,
+        clientId,
+        dataUser,
+        emailData,
+        'NA',
+        'tweet-lead'
+      );
     }
   const loading = (cl) => {
     return <LoadingMainForm cl={cl} />;
   };
+
+  const clickPhone = ()=>{
+    fetchLeads(
+      true,
+      backendURLBase,
+      endpoints,
+      clientId,
+      dataUser,
+      emailData,
+      'NA',
+      'phone-lead'
+    );
+  }
   return (
     <>
     
@@ -142,6 +183,7 @@ const List = ({
                 target={"blank"}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                onClick={clickPhone}
               >
                 {buttonText}
               </Button>

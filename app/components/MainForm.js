@@ -10,6 +10,7 @@ import EmailForm from "./EmailForm";
 import ThankYou from "./ThankYou";
 import { Link, animateScroll as scroll } from "react-scroll";
 import { fetchRepresentatives } from "../assets/petitions/fetchRepresentatives";
+import { fetchLeads } from "../assets/petitions/fetchLeads";
 import LoadingMainForm from "./LoadingMainForm";
 const MainForm = ({
   leads,
@@ -67,7 +68,17 @@ const MainForm = ({
     }
   };
 const selectAll = (e) => {
-setMany(true)
+  fetchLeads(
+    true,
+    backendURLBase,
+    endpoints,
+    clientId,
+    dataUser,
+    emailData,
+    'NA',
+    'checkbox-list-email-preference-lead'
+  );
+  setMany(true)
 setEmails([
   ...mp,
   ...senator
@@ -85,21 +96,14 @@ setShowList(true)
       [e.target.name]: e.target.value,
     });
   };
-  const fieldValidator = () => {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    const isValidEmail = (email) => {
-      return emailRegex.test(email.trim());
-    };
-    for (let key in dataUser) {
-      // console.log(key);
-      let value = dataUser[key];
-      if (value === "") return false;
-      if (key === "emailUser") {
-        let value = dataUser[key];
-        if (isValidEmail(value) === false) return false;
-      }
+  const isValidEmail = (email) => {
+    if(!email){
+      return false
     }
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailRegex.test(email.trim());
   };
+  
   const back = (e) => {
     e.preventDefault;
     setShowFindForm(false)
@@ -107,17 +111,19 @@ setShowList(true)
   }
   const click = async (e) => {
     e.preventDefault();
-    // console.log(dataUser, 'dataUser')
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    setValidated(true);
-    if (fieldValidator() === false || tac === false ||  Object.getOwnPropertyNames(dataUser).length === 0 || dataUser.userName === undefined  || dataUser.emailUser === undefined  ) {
+    console.log(dataUser, 'dataUser')
+    // const form = e.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    // }
+    if (!isValidEmail(dataUser.emailUser) || tac === false ||  Object.getOwnPropertyNames(dataUser).length === 0 || dataUser.userName === undefined  || dataUser.emailUser === undefined  ) {
       setError(true);
+      // console.log('Field validator', fieldValidator())
       return;
     }
+    console.log(validated, 'validated')
+    setValidated(true);
     setShowLoadSpin(true);
     setError(false);
 
@@ -178,6 +184,17 @@ setShowList(true)
       if (!mainData) return "loading datos";
       if (!mp) return "loading datos";
     }
+    fetchLeads(
+      true,
+      backendURLBase,
+      endpoints,
+      clientId,
+      dataUser,
+      emailData,
+      'NA',
+      'basic-data-user'
+    );
+    setLeads(leads + 1)
   };
   if (!mainData) return "loading datos";
   if (!mp) return "loading datos";
@@ -209,12 +226,12 @@ setShowList(true)
               {formFields.map((field, key) => {
                 return field.type !== "state" ? (
                   <Form.Group  className="field" key={key}>
-                    <Form.Label className="select-label main-texts-color labels-text-format">
+                    <Form.Label className="select-label main-texts-color labels-text-format" htmlFor={`emailInput-mainForm${key}`}>
                       {field.label}*
                     </Form.Label>
                     <Form.Control
-                      id="emailInput-mainForm"
-                      type={field.type}
+                      id={`emailInput-mainForm${key}`}
+                      type={field.type === 'emailUser' ? 'email' : field.type}
                       placeholder={field.placeholder}
                       name={field.type ===  "name" ? "userName" : field.type }
                       onChange={handleChange}
@@ -318,6 +335,8 @@ setShowList(true)
                 senator.map((mps, index) => (
                   <List
                   setMany={setMany}
+                  leads={leads}
+                  setLeads={setLeads}
                     setShowEmailForm={setShowEmailForm}
                     setShowFindForm={setShowFindForm}
                     showFindForm={showFindForm}
@@ -333,6 +352,8 @@ setShowList(true)
                     showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
                   colors={colors}
+                  backendURLBase={backendURLBase}
+                  endpoints={endpoints}
                   />
                 ))
               ) : (
@@ -354,6 +375,8 @@ setShowList(true)
                 mp.map((mps, index) => (
                   <List
                   setMany={setMany}
+                  leads={leads}
+                  setLeads={setLeads}
                   setShowList={setShowList}
                   setShowEmailForm={setShowEmailForm}
                   setShowFindForm={setShowFindForm}
@@ -369,6 +392,9 @@ setShowList(true)
                   showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
                   colors={colors}
+                  backendURLBase={backendURLBase}
+                  endpoints={endpoints}
+
                   />
                 ))
               ) : (
@@ -391,6 +417,8 @@ you’d like to email</h2>
               {mp.length > 0 ? (
                 <ListSelect
                   setEmails={setEmails}
+                  leads={leads}
+                  setLeads={setLeads}
                   emails={emails}
                   setShowList={setShowList}
                   setShowListSelect={setShowListSelect}
@@ -408,6 +436,9 @@ you’d like to email</h2>
                   setAllDataIn={setAllDataIn}
                   showMainContainer={showMainContainer}
                   setShowMainContainer={setShowMainContainer}
+                  backendURLBase={backendURLBase}
+                  endpoints={endpoints}
+                  
                 />
               ) : (
                 <Alert variant="danger">

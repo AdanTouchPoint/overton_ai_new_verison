@@ -117,7 +117,8 @@ const EmailForm = ({
           clientId,
           dataUser,
           emailData,
-          messageEmail
+          messageEmail,
+          'message'
         );
         setShowEmailForm(true);
         setShowFindForm(true);
@@ -132,7 +133,8 @@ const EmailForm = ({
           clientId,
           dataUser,
           emailData,
-          messageEmail
+          messageEmail,
+          'message-not-sended'
         );
         throw new Error("Email not sent successfully");
       }
@@ -198,6 +200,7 @@ const EmailForm = ({
             All fields are required, please fill in the missing ones.
           </Alert>
         ) : null}
+        {console.log(allDataIn)}
         <Form
           name="fm-email"
           onSubmit={handleSubmit}
@@ -205,7 +208,7 @@ const EmailForm = ({
           validated={validated}
         >
           <div>
-          {console.log(mainData, 'Main Data')}
+          
             {
               continueBtn ? (<>
               <h3 className="ia-instructions-title main-text-title">{mainData.titleAI ? mainData.titleAI : 'Describe your email to Ais'}</h3>
