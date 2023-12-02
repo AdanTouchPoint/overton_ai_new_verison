@@ -6,18 +6,19 @@ const fetchLeads = (
   clientId,
   dataUser,
   emailData,
-  emailMessage
+  emailMessage = '',
+  leadType
 ) => {
   fetchData(
     "POST",
     backendURLBase,
     endpoints.toSaveLeads,
     clientId,
-    `&firstName=${dataUser.userName ? dataUser.userName : ""}&postalcode=${
+    `&firstName=${dataUser.userName ? dataUser.userName : "NA"}&postalcode=${
       dataUser.postalCode ? dataUser.postalCode : "NA"
-    }&emailData=${dataUser?.emailUser}&representative=${
-      emailData?.name
-    }&emailMessage=${JSON.stringify(emailMessage)}&sended=${successResponse}&subject=${dataUser.subject}&city=${dataUser.city ? dataUser.city : "NA"}&party=${dataUser.party ? dataUser.party : "NA"}`
+    }&emailData=${dataUser?.emailUser ? dataUser.emailUser : "NA"}&representative=${
+      emailData?.name ? emailData?.name : 'NA'
+    }&emailMessage=${emailMessage ? JSON.stringify(emailMessage) : 'NA'}&sended=${successResponse}&subject=${dataUser.subject ? dataUser.subject : 'NA'}&city=${dataUser.city ? dataUser.city : "NA"}&party=${dataUser.party ? dataUser.party : "NA"}&type${leadType}`
   );
   // console.log(clientId, 'clientID')
   // console.log(dataUser, 'subject')
