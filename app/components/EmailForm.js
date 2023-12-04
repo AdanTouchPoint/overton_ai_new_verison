@@ -244,7 +244,7 @@ const EmailForm = ({
                     ) : null}
                     <Form.Group>
                       {
-                        continueBtn ? (<Form.Label className="label-ia-prompt">Write Prompt or leave blank and click “Generate”</Form.Label>) : (<Form.Label className="label-ia-prompt">Email</Form.Label>)
+                        continueBtn ? (<Form.Label className="label-ia-prompt">Write a Prompt and click “Generate”</Form.Label>) : (<Form.Label className="label-ia-prompt">Email</Form.Label>)
                       }
                       
                       <Form.Control
