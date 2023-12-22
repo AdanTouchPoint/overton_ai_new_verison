@@ -12,7 +12,8 @@ import { useCompletion } from "ai/react";
 import { animateScroll as scroll } from "react-scroll";
 import LoadingMainForm from "./LoadingMainForm";
 import ManualEmailForm from "./ManualEmailForm";
-const EmailForm = ({
+import EmailForm from "./EmailForm";
+const AIPrompt = ({
   leads,
   setLeads,
   questions,
@@ -35,11 +36,13 @@ const EmailForm = ({
   setMany,
   many,
   setShowMainContainer,
-  isLoading,
-  hideEmailForm,
-  setHideEmailForm 
+  setQuestions,
+  setDataQuestions,
+  dataQuestions,
+  configurations,
+  
 }) => {
-  const [showEmailPreview, setShowEmailPreview] = useState(true);
+  const [hideEmailForm, setHideEmailForm] = useState(true);
   const [showManualEmailForm, setShowManualEmailForm] = useState(true)
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState(false);
@@ -48,102 +51,59 @@ const EmailForm = ({
   const [emailMessage, setEmailMessage] = useState({});
   const [requestCompletion, setRequestCompletion] = useState([]);
   const [ableGenIA, setAbleGenIA] = useState(true);
-  const [continueBtn, setcontinueBtn] = useState(true);
-  
-  
-  const handleMessageChange = (e) => {
-    e.preventDefault();
-    setDataUser({
-      ...dataUser,
-      subject: e.target.name === "subject" ? e.target.value : dataUser.subject,
-      message: e.target.name === "message" ? e.target.value : dataUser.message,
-    });
-    if (!dataUser.message || dataUser.message === '') {
-      setAbleGenIA(false);
-    }
-    // console.log(dataUser);
-  };
-  const handleContinue = async (e) => {
-    e.preventDefault();
-    try {
-      let payload;
-      // console.log(dataUser, 'sendmany')
-      if (many === true) {
-        payload = await fetchData(
-          "GET",
-          backendURLBaseServices,
-          endpoints.toSendBatchEmails,
-          clientId,
-          `to=${allDataIn}&subject=${dataUser.subject}&firstName=${
-            dataUser.userName
-          }&emailData=${
-            dataUser.emailUser
-          }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
-        )
-      } else{
-        // console.log(allDataIn);
-        payload = await fetchData(
-          "GET",
-          backendURLBaseServices,
-          endpoints.toSendBatchEmails,
-          clientId,
-          `to=${emailData.email}&subject=${dataUser.subject}&firstName=${
-            dataUser.userName
-          }&emailData=${
-            dataUser.emailUser
-          }&text=${dataUser.message.replace(/\n\r?/g, "<br/>")}`
-        );
+  const [iaPrompt, setIaPrompt] =useState('')
+//   const [continueBtn, setcontinueBtn] = useState(true);
+  const {
+    complete,
+    completion,
+    input,
+    stop,
+    isLoading,
+    handleInputChange,
+    handleSubmit,
+    setCompletion,
+  } = useCompletion({
+    api: "/api/completion",
+    //(onFinish: ()=>(setRequestCompletion({message: JSON.parse(completion).message , subject: JSON.parse(completion).subject} ))
+  });
 
+  const handlePromptChange = (e) =>{
+    setIaPrompt(e.target.value);
+    if (!iaPrompt || iaPrompt === '') {
+        setAbleGenIA(false);
       }
-      
-      // console.log(payload.success);
-      const messageEmail = dataUser.message.replace(/\n\r?/g, "<br/>")
-      if (payload.success === true) {
-        fetchLeads(
-          true,
-          backendURLBase,
-          endpoints,
-          clientId,
-          dataUser,
-          emailData,
-          messageEmail,
-          'message'
-        );
-        setHideIAPrompt(true);
-        setHideEmailForm(true)
-        setShowFindForm(true);
-        setShowEmailPreview(true);
-        setShowThankYou(false);
-        setLeads(leads + 1);
-      } else {
-        fetchLeads(
-          false,
-          backendURLBase,
-          endpoints,
-          clientId,
-          dataUser,
-          emailData,
-          messageEmail,
-          'message-not-sended'
-        );
-        throw new Error("Email not sent successfully");
-      }
-    } catch (error) {
-      console.error("Error handling continue:", error);
-      // Mostrar un mensaje de error al usuario, puedes agregar un estado para manejarlo
-      setError(true);
-    }
-  };
+  }
   const back = (e) => {
     e.preventDefault();
-    setHideEmailForm(true)
-    setHideIAPrompt(false);
-    
+    setShowList(false);
+    setHideIAPrompt(true);
+    setShowMainContainer(false);
   };
   const loading = (cl) => {
     scroll.scrollTo(1000);
     return <LoadingMainForm cl={cl} />;
   };
+  const clickAI = async (e) => {
+    e.preventDefault();
+    try {
+      const text = await complete(iaPrompt);
+      const response = JSON.parse(text);
+    //   console.log(text);
+      setRequestCompletion({ message: response.message });
+      setDataUser({
+        ...dataUser,
+        subject: response.subject || '',
+        message: response.message || '',
+      });
+      setHideIAPrompt(true)
+      setHideEmailForm(false)
+      
+    } catch (error) {
+      console.error("Error in AI generation:", error);
+      // Manejar el error, posiblemente mostrando un mensaje al usuario
+    }
+  };
+
   const manualMailChange = async (e) =>{
     e.preventDefault();
     setDataUser({
@@ -151,18 +111,18 @@ const EmailForm = ({
       subject:'',
       message:''
     })
-    setHideIAPrompt(true);
+    setHideIAPrompt(true)
     setShowManualEmailForm(false)
   }
   return (
     <>
-      {/* {isLoading == true ? (
+      {isLoading == true ? (
               <div className="emailContainer">
                 {loading("spinner-containerB")}
 
               </div>
-            ) : ( */}
-            <div className={"emailContainer"} hidden={hideEmailForm}>
+            ) : (
+            <div className={"emailContainer"} hidden={hideIAPrompt}>
         {error ? (
           <Alert variant={"danger"}>
             All fields are required, please fill in the missing ones.
@@ -171,46 +131,32 @@ const EmailForm = ({
         {console.log(allDataIn)}
         <Form
           name="fm-email"
-          // onSubmit={handleContinue}
+          onSubmit={handleSubmit}
           noValidate
           validated={validated}
         >
           <div>
+          
             <>
-            <h3 className="ia-instructions-title main-text-title">Edit & Send</h3>
-            <p className="ia-instructions-p main-text-instruction">Edit and/or send the email that was written for you by AI. </p> 
-            
-            </>  
-           
-            
+              <h3 className="ia-instructions-title main-text-title">{mainData.titleAI ? mainData.titleAI : 'Describe your email to Ais'}</h3>
+            <p className="ia-instructions-p main-text-instruction">
+            {mainData.intructionsAI ? mainData.intructionsAI : 'Customer instructions for the user. Here the client explains to the user how this function works, and tells them to briefly describe what they want to say in the email.'}
+            </p>
+              </>
+
               <div>
                 <div>
                   <Col>
-                    
-                      <Form.Group>
-                        <Form.Label className="label-ia-prompt">
-                          Subject Line
-                        </Form.Label>
-                        <Form.Control
-                          id="subject-emailform"
-                          onChange={handleMessageChange}
-                          name="subject"
-                          type="text"
-                          defaultValue={dataUser.subject}
-                        />
-                      </Form.Group>
-                    
                     <Form.Group>
-                     <Form.Label className="label-ia-prompt">Email</Form.Label>
-                      
+                      <Form.Label className="label-ia-prompt">Write a Prompt and click “Generate”</Form.Label>
                       
                       <Form.Control
                         id="message-emailform"
-                        onChange={handleMessageChange}
+                        onChange={handlePromptChange}
                         as="textarea"
                         rows={12}
                         name="message"
-                        defaultValue={dataUser.message}
+                        defaultValue={iaPrompt}
                         className="email-ia-text-area"
                         required
                       />
@@ -221,13 +167,10 @@ const EmailForm = ({
                   <Button onClick={back} className={"button-email-form back-button"}>
                     Back
                   </Button>
-                  
-                  <Button
-                    onClick={handleContinue}
-                    className={"button-email-form secundary-btn"}
-                  >
-                    Send
+                  <Button onClick={clickAI} className={"button-email-form secundary-btn"} disabled={ableGenIA}>
+                    Generate
                   </Button>
+                 
                 </div>
               </div>
               <div className="change-to-manual-email-container">
@@ -237,7 +180,7 @@ const EmailForm = ({
         </Form>
         
         </div>
-      {/* )} */}
+      )}
       <ManualEmailForm
         many={many}
         setMany={setMany}
@@ -265,8 +208,39 @@ const EmailForm = ({
         showManualEmailForm={showManualEmailForm}
         setShowManualEmailForm={setShowManualEmailForm}
       />
+    <EmailForm
+      many={many}
+      setMany={setMany}
+      setShowList={setShowList}
+      setLeads={setLeads}
+      leads={leads}
+      setShowThankYou={setShowThankYou}
+      setShowFindForm={setShowFindForm}
+      setHideIAPrompt={setHideIAPrompt}
+      hideIAPrompt={hideIAPrompt}
+      dataUser={dataUser}
+      emailData={emailData}
+      setEmailData={setEmailData}
+      setDataUser={setDataUser}
+      clientId={clientId}
+      endpoints={endpoints}
+      backendURLBase={backendURLBase}
+      backendURLBaseServices={backendURLBaseServices}
+      mainData={mainData}
+      questions={questions}
+      setQuestions={setQuestions}
+      setDataQuestions={setDataQuestions}
+      dataQuestions={dataQuestions}
+      allDataIn={allDataIn}
+      setAllDataIn={setAllDataIn}
+      configurations={configurations}
+      setShowMainContainer={setShowMainContainer}
+      setHideEmailForm={setHideEmailForm}
+      hideEmailForm={hideEmailForm}
+      isLoading={isLoading}
+    />
     </>
   );
 };
 
-export default EmailForm;
+export default AIPrompt;

@@ -3,7 +3,7 @@ import Button from "react-bootstrap/cjs/Button";
 import Modal from 'react-bootstrap/Modal';
 import { fetchLeads } from '../assets/petitions/fetchLeads';
 
-const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, dataUser,  setEmailData,  setShowFindForm, setShowEmailForm, setShowMainContainer, showMainContainer, emailData, leads, setLeads, backendURLBase, endpoints, clientId}) => {
+const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, dataUser,  setEmailData,  setShowFindForm, setHideIAPrompt, setShowMainContainer, showMainContainer, emailData, leads, setLeads, backendURLBase, endpoints, clientId}) => {
   const [checklistStates, setChecklistStates] = useState(emails?.map(() => true) || []);
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -26,7 +26,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
       //  console.log(selectedEmails, 'allDataIn')
       if(checklistStates.every(state => !state)) {
         handleShow();
-        setShowEmailForm(true);
+        setHideIAPrompt(true);
         setShowFindForm(true);
 
       } else {
@@ -34,7 +34,7 @@ const ListSelect = ({emails,setShowList,setShowListSelect,setAllDataIn, mp, data
         setEmailData({
           ...dataUser
         });
-        setShowEmailForm(false);
+        setHideIAPrompt(false);
         setShowFindForm(true);
         setShowListSelect(true);
         setShowMainContainer(true);
