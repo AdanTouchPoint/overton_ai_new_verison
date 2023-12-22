@@ -156,12 +156,7 @@ const EmailForm = ({
   }
   return (
     <>
-      {/* {isLoading == true ? (
-              <div className="emailContainer">
-                {loading("spinner-containerB")}
-
-              </div>
-            ) : ( */}
+      
             <div className={"emailContainer"} hidden={hideEmailForm}>
         {error ? (
           <Alert variant={"danger"}>
@@ -237,7 +232,7 @@ const EmailForm = ({
         </Form>
         
         </div>
-      {/* )} */}
+      
       <ManualEmailForm
         many={many}
         setMany={setMany}
