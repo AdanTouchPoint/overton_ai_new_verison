@@ -40,7 +40,7 @@ const List = ({
 
   const generateTweet = (completion) => {
     if (completion !== "" ) {
-      const encoder =  urlEncode(completion);
+      const encoder =  urlEncode(completion.replace(/['"]+/g, ''));
       const tweetText =  `.${mps.twitter} ${encoder}`;
         window.open(`https://twitter.com/intent/tweet?text=${tweetText}`)
         return
