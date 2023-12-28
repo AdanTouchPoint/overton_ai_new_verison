@@ -6,6 +6,7 @@ import Button from "react-bootstrap/cjs/Button";
 import Alert from "react-bootstrap/Alert";
 import List from "./List";
 import ListSelect from "./ListSelect";
+import AIPrompt from "./AIPrompt";
 import EmailForm from "./EmailForm";
 import ThankYou from "./ThankYou";
 import { Link, animateScroll as scroll } from "react-scroll";
@@ -44,7 +45,7 @@ const MainForm = ({
   const [showLoadSpin, setShowLoadSpin] = useState(false);
   const [showList, setShowList] = useState(true);
   const [showFindForm, setShowFindForm] = useState(false);
-  const [showEmailForm, setShowEmailForm] = useState(true);
+  const [hideIAPrompt, setHideIAPrompt] = useState(true);
   const [validated, setValidated] = useState(false);
   const [error, setError] = useState(false);
   const [showThankYou, setShowThankYou] = useState(true);
@@ -337,7 +338,7 @@ setShowList(true)
                   setMany={setMany}
                   leads={leads}
                   setLeads={setLeads}
-                    setShowEmailForm={setShowEmailForm}
+                    setHideIAPrompt={setHideIAPrompt}
                     setShowFindForm={setShowFindForm}
                     showFindForm={showFindForm}
                     mainData={mainData}
@@ -378,7 +379,7 @@ setShowList(true)
                   leads={leads}
                   setLeads={setLeads}
                   setShowList={setShowList}
-                  setShowEmailForm={setShowEmailForm}
+                  setHideIAPrompt={setHideIAPrompt}
                   setShowFindForm={setShowFindForm}
                   showFindForm={showFindForm}
                   emailData={emailData}
@@ -422,7 +423,7 @@ you’d like to email</h2>
                   emails={emails}
                   setShowList={setShowList}
                   setShowListSelect={setShowListSelect}
-                  setShowEmailForm={setShowEmailForm}
+                  setHideIAPrompt={setHideIAPrompt}
                   setShowFindForm={setShowFindForm}
                   showFindForm={showFindForm}
                   emailData={emailData}
@@ -454,7 +455,7 @@ you’d like to email</h2>
       
       
     </div>
-    <EmailForm
+    <AIPrompt
       many={many}
       setMany={setMany}
       setShowList={setShowList}
@@ -462,8 +463,8 @@ you’d like to email</h2>
       leads={leads}
       setShowThankYou={setShowThankYou}
       setShowFindForm={setShowFindForm}
-      setShowEmailForm={setShowEmailForm}
-      showEmailForm={showEmailForm}
+      setHideIAPrompt={setHideIAPrompt}
+      hideIAPrompt={hideIAPrompt}
       dataUser={dataUser}
       emailData={emailData}
       setEmailData={setEmailData}

@@ -14,7 +14,7 @@ const List = ({
   mainData,
   setEmailData,
   setShowFindForm,
-  setShowEmailForm,
+  setHideIAPrompt,
   tweet,
   setShowList,
   showMainContainer,
@@ -72,7 +72,7 @@ const List = ({
       ...mps,
     });
     setMany(false)
-    setShowEmailForm(false);
+    setHideIAPrompt(false);
     setShowFindForm(true);
     setShowList(true)
     setShowMainContainer(true)
