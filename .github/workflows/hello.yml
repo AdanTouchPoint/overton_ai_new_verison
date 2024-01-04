@@ -1,9 +1,9 @@
 name: Deployment Pipeline
 
 on:
-  push:
-    branches:
-      - master
+  label:
+    types:
+      - created
 
 jobs:
   deploy:
