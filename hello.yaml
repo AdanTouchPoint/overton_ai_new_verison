@@ -1,0 +1,13 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches:
+      -main
+
+jobs:
+  deploy:
+    runs-on: Ubuntu-18.04
+    steps:
+      - name: Echo the message
+        run: echo "Hola perros"
