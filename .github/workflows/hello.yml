@@ -6,8 +6,20 @@ on:
       - created
 
 jobs:
-  deploy:
-    runs-on: Ubuntu-22.04
+  update-readme:
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Echo the message
-        run: echo "Hola perros"
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Añadir punto al final del README
+        run: echo "." >> README.md
+
+      - name: Commit y push
+        run: |
+          git commit -m "Añadir punto al final del README" -a
+          git push
