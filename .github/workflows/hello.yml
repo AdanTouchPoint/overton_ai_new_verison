@@ -21,5 +21,7 @@ jobs:
 
       - name: Commit y push
         run: |
+          git config --local user.email "adan.mijangos@touchpointmarketing.mx"
+          git config --local user.name "AdanTouchPoint"
           git commit -m "Añadir punto al final del README" -a
           git push
