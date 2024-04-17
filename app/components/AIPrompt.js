@@ -66,7 +66,6 @@ const AIPrompt = ({
     api: "/api/completion",
     //(onFinish: ()=>(setRequestCompletion({message: JSON.parse(completion).message , subject: JSON.parse(completion).subject} ))
   });
-
   const handlePromptChange = (e) =>{
     setIaPrompt(e.target.value);
     if (!iaPrompt || iaPrompt === '') {
