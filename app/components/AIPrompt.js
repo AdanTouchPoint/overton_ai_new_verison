@@ -87,8 +87,7 @@ const AIPrompt = ({
     e.preventDefault();
     try {
       const text = await complete(iaPrompt);
-      const response = JSON.parse(text);
-    //   console.log(text);
+      const response = JSON.parse(text)
       setRequestCompletion({ message: response.message });
       setDataUser({
         ...dataUser,

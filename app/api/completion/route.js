@@ -21,13 +21,13 @@ export async function POST(req) {
     messages: [
       {
         role: 'user',
-        content: `Given the following text, write an email whit subject the response would be an object like this: {{subject:}, {message:}} , this email should be nice and formal is directed to my local representatives, dont let space for [name] or similar, all of this in 200 or less tokens, 
+        content: `Given the following text, write an email whit subject the response would be an JSON object like this: {{subject:}, {message:}} , this email should be nice and formal is directed to my local representatives, dont let space for [name] or similar, all of this in 200 or less tokens, 
 this is the text:
 ${prompt}
-        
-Output:\n`
+`
       }
     ],
+    response_format: { type: "json_object" },
     max_tokens: 200,
     temperature: 0, // you want absolute certainty for spell check
     top_p: 1,
