@@ -16,5 +16,6 @@ export const formater = async(data) =>{
     formatedData.intructionsNoAI = specificdata["Email View no AI"]?.intructionsNoAI || '';
     formatedData.titleAI = specificdata["Email View with AI"]?.titleAI || '';
     formatedData.intructionsAI = specificdata["Email View with AI"]?.intructionsAI || '';
+    formatedData.promptAI = specificdata["Prompt AI"]?.promptAI || '';
     return formatedData
 }

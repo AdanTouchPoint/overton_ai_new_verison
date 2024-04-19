@@ -10,22 +10,22 @@ const openai = new OpenAI({
 })
  
 export async function POST(req) {
-  // Extract the `prompt` from the body of the request
+   // Extract the `prompt` from the body of the request
   const { prompt } = await req.json()
- 
+  const separateObjects = JSON.parse(prompt)
+  console.log(separateObjects)
   // Request the OpenAI API for the response based on the prompt
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     stream: true,
     // a precise prompt is important for the AI to reply with the correct tokens
     messages: [
+      {role: "system", content:separateObjects.promptBase},
       {
         role: 'user',
-        content: `Given the following text, write an email whit subject the response would be an JSON object like this: {{subject:}, {message:}} , this email should be nice and formal is directed to my local representatives, dont let space for [name] or similar, all of this in 200 or less tokens, 
-this is the text:
-${prompt}
-`
-      }
+        content: `${separateObjects.prompt}`
+      },
+      {role: "system", content:"the answer must be in JSON object like this {{subject:},{message:}}"}
     ],
     response_format: { type: "json_object" },
     max_tokens: 200,

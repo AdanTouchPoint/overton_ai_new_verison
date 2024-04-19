@@ -85,7 +85,9 @@ const AIPrompt = ({
   const clickAI = async (e) => {
     e.preventDefault();
     try {
-      const text = await complete(iaPrompt);
+      const validObject = { promptBase: mainData.promptAI, prompt : iaPrompt}
+      const validString = await JSON.stringify(validObject)
+      const text = await complete(validString);
       const response = JSON.parse(text)
       setRequestCompletion({ message: response.message });
       setDataUser({
