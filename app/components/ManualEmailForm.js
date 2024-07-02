@@ -42,18 +42,7 @@ const ManualEmailForm = ({
 
   const [emailMessage, setEmailMessage] = useState({});
   const [continueBtn, setcontinueBtn] = useState(true);
-  
-  
-  // const handleMessageChange = (e) => {
-  //   e.preventDefault();
-  //   setDataUser({ ...emailData, [e.target.name]: e.target.value });
-  //   console.log(dataUser.message, 'datauser')
-  // };
-  // const handleSubjectChange = (e) =>{
-  //   e.preventDefault();
-  //   setDataUser({ ...dataUser, [e.target.name]: e.target.value });
-  //   console.log(dataUser.subject, 'datauser')
-  // }
+
   const handleMessageChange = (e) => {
     e.preventDefault();
     setDataUser({
@@ -61,13 +50,10 @@ const ManualEmailForm = ({
       subject: e.target.name === "subject" ? e.target.value : dataUser.subject,
       message: e.target.name === "message" ? e.target.value : dataUser.message,
     });
-    
-    // console.log(dataUser);
   };
   const handleSend = async (e) => {
     e.preventDefault();
     let currentSubject = dataUser.message;
-    // console.log(currentSubject)
     if (many === true) {
       // console.log(allDataIn);
       const payload = await fetchData(
@@ -125,7 +111,6 @@ const ManualEmailForm = ({
       }
       return;
     }
-    // console.log(dataUser.subject, 'datauser subject')
     const payload = await fetchData(
       "GET",
       backendURLBaseServices,
@@ -235,7 +220,7 @@ const ManualEmailForm = ({
                           onChange={handleMessageChange}
                           name="subject"
                           type="text"
-                          defaultValue={dataUser.subject}
+                          defaultValue={dataUser?.subject}
                           className="subject-input"
                           
                         />
@@ -251,7 +236,7 @@ const ManualEmailForm = ({
                         as="textarea"
                         rows={12}
                         name="message"
-                        defaultValue={dataUser.message}
+                        defaultValue={dataUser?.message}
                         className="email-ia-text-area"
                         required
                       />

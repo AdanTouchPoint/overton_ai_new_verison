@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import MainForm from "./components/MainForm";
 import LoadingMainForm from './components/LoadingMainForm';
 import { fetchQuestions } from './assets/petitions/fetchQuestions';
-import { fetchStatesData } from './assets/petitions/fetchStatesData';
+import { fetchEmailData } from './assets/petitions/fetchEmailData';
 import { fetchTweet } from './assets/petitions/fetchTweet';
 import { fetchTYM } from './assets/petitions/fetchTYM';
 import { fetchMainContent } from './assets/petitions/fetchMainContent';
@@ -42,7 +42,8 @@ function Home() {
         toSaveLeads:'/leads/',
         toSendEmails:'/email-builder/',
         toGetAllLeads:'/leads/',
-        toGetColors:'/theme/'
+        toGetColors:'/theme/',
+        toGetEmailData:'/email-message/'
       })
     const [mp, setMp] = useState([])
     const [senator, setSenator] = useState([])
@@ -93,8 +94,8 @@ function Home() {
             fetchMainContent('GET', backendURLBase, endpoints.toGetMainData, clientId, '', setMainData, setFormFields),
             fetchTweet('GET', backendURLBase, endpoints.toGetTweets, clientId, '', setTweet),
             fetchTYM('GET', backendURLBase, endpoints.toGetThankYouMessage, clientId, '', setTypData),
-            fetchColors('GET', backendURLBase, endpoints.toGetColors, clientId, '', setColors, colors )
-            //fetchEmailData('GET', backendURLBase, endpoints.toGetQuestions, clientId, "", setDataUser),
+            fetchColors('GET', backendURLBase, endpoints.toGetColors, clientId, '', setColors, colors ),
+            fetchEmailData('GET', backendURLBase, endpoints.toGetEmailData, clientId, "", setDataUser),
             //fetchStatesData('GET', backendURLBase, endpoints.toGetAllRepresentatives, clientId, '', setStates),
             //fetchQuestions('GET', backendURLBase, endpoints.toGetQuestions, clientId, '', setDataQuestions),
           ]).then(() => {
