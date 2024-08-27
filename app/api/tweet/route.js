@@ -1,6 +1,6 @@
 // app/api/completion/route.ts
 import { createOpenAI } from '@ai-sdk/openai';
-import { generateText, convertToCoreMessages } from 'ai';
+import { generateText } from 'ai';
  
 const openai = createOpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
