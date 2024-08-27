@@ -66,7 +66,6 @@ const List = ({
       'NA',
       'mail-lead'
     );
-    setLeads(leads + 1)
     setEmailData({
       ...dataUser,
       ...mps,
@@ -79,8 +78,15 @@ const List = ({
   };
   const clickAI = async (e) => {
       e.preventDefault()
-      const text = await complete(`write a tweet using this prompt: ${tweet}`)
-      generateTweet(text)
+      const text = await fetch('/api/tweet', {
+        method: 'POST',
+        body: JSON.stringify({
+          prompt: tweet,
+        }),
+      })
+    const data = await text.json()
+      console.log(data)
+      generateTweet(data)
       fetchLeads(
         true,
         backendURLBase,
