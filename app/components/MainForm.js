@@ -364,12 +364,8 @@ setShowList(true)
                 </Alert>
               )}
             </div>
-
-
             </div>
-
             <div className="list-container">
-
             <h5 className="representative-position">MP`S</h5>
             <div className="representatives-container">
               {mp && mp.length > 0 ? (
@@ -410,10 +406,8 @@ setShowList(true)
             <Button className="back-button" onClick={back}>Back</Button>
           </div>
           <div className={"container senators-container"} hidden={showListSelect}>
-          
             <h2 className="main-texts-color instruction-text">Select all representatives
-you’d like to email</h2>
-          
+            you’d like to email</h2>  
             <div className="representatives-container">
               {mp.length > 0 ? (
                 <ListSelect
@@ -448,12 +442,8 @@ you’d like to email</h2>
                 </Alert>
               )}
             </div>
-
-          
           </div>
         </div>
-      
-      
     </div>
     <AIPrompt
       many={many}

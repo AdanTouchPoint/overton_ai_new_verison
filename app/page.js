@@ -99,10 +99,7 @@ function Home() {
             //fetchStatesData('GET', backendURLBase, endpoints.toGetAllRepresentatives, clientId, '', setStates),
             //fetchQuestions('GET', backendURLBase, endpoints.toGetQuestions, clientId, '', setDataQuestions),
           ]).then(() => {
-            
-            setLoading(false) 
-            
-            
+            setLoading(false)
             // cambia el estado a "false" cuando todas las consultas se hayan completado
           }).catch((error) => console.error(error))
         }
@@ -128,13 +125,10 @@ function Home() {
 
     return(
       <>
-      
       {
         loading &&  <LoadingMainForm cl={"spinner-container"} />
       }
-      
       {
-        
         !loading && (
           <MainForm
               configurations={configurations}
@@ -165,14 +159,10 @@ function Home() {
               setAllDataIn={setAllDataIn}
               colors={colors}
           />
-
         )
-        
       }
-      
       </>
     )
-
 }
 
 export default Home

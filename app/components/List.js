@@ -3,8 +3,6 @@ import Button from "react-bootstrap/cjs/Button";
 import { urlEncode } from '../assets/helpers/utilities';
 import { useCompletion } from "ai/react";
 import LoadingMainForm from "./LoadingMainForm";
-import { Form } from "react-bootstrap";
-import { generateEtags } from "@/next.config";
 import MobileButtons from "./MobileButtons";
 import { fetchLeads } from "../assets/petitions/fetchLeads";
 const List = ({
